@@ -1,0 +1,47 @@
+name: Angular CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x, 22.x]
+        # Les versions de Node.js ici, en fonction des versions supportées par votre projet Angular.
+
+    steps:
+      # Étape 1 : Cloner le repository
+      - uses: actions/checkout@v4
+
+      # Étape 2 : Utiliser différentes versions de Node.js
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm' # Active le cache pour npm afin d'accélérer les installations de dépendances
+
+      # Étape 3 : Installer les dépendances avec npm ci
+      - run: npm ci
+        working-directory: front  # Répertoire du projet Angular
+
+      # Étape 4 : Construire le projet Angular
+      - run: npm run build --if-present
+        working-directory: front
+
+      # Étape 5 : Exécuter les tests Angular avec Karma
+      - run: npm run test -- --watch=false --code-coverage
+        working-directory: front
+
+      # Étape 6 : Sauvegarder les rapports de couverture de tests comme artifacts
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: front/coverage  # Chemin vers les rapports de couverture générés par Karma
