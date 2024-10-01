@@ -28,7 +28,7 @@ jobs:
           cache: 'npm' # Active le cache pour npm afin d'accélérer les installations de dépendances
 
       # Étape 3 : Installer les dépendances avec npm ci
-      - run: npm ci
+      - run: npm install
         working-directory: front  # Répertoire du projet Angular
 
       # Étape 4 : Construire le projet Angular
