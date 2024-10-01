@@ -30,10 +30,11 @@ jobs:
 
       # Étape 4 : Sauvegarder les rapports JaCoCo comme artifact
       - name: Upload JaCoCo coverage report
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: jacoco-report
           path: target/site/jacoco
+
 
 
 
