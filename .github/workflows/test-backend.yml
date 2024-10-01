@@ -21,23 +21,21 @@ jobs:
       - name: Setup JDK
         uses: actions/setup-java@v3
         with:
-          java-version: '17' # Ou '11' selon votre projet
+          java-version: '11'
           distribution: 'temurin'
 
-      # Étape 3 : Se déplacer dans le répertoire 'back' qui contient le fichier pom.xml
-      - name: Change directory to the backend folder
-        working-directory: back
-
-      # Étape 4 : Installer les dépendances et exécuter les tests
+      # Étape 3 : Installer les dépendances et exécuter les tests dans le répertoire 'back'
       - name: Run Maven tests and JaCoCo
         run: mvn clean verify
+        working-directory: back
 
-      # Étape 5 : Sauvegarder les rapports JaCoCo comme artifact
+      # Étape 4 : Sauvegarder les rapports JaCoCo comme artifact
       - name: Upload JaCoCo coverage report
         uses: actions/upload-artifact@v3
         with:
           name: jacoco-report
           path: back/target/site/jacoco
+
 
 
 
