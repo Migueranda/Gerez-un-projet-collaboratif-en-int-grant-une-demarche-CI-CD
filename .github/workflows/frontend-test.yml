@@ -13,15 +13,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Étape 1 : Cloner le repository
+      # Étape 1 : Cloner le repository avec la version v4 de checkout
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
-      # Étape 2 : Configurer Node.js
+      # Étape 2 : Configurer Node.js avec la version v4
       - name: Setup Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version: '20' 
+
       # Étape 3 : Installer les dépendances
       - name: Install dependencies
         run: npm install
@@ -30,11 +31,11 @@ jobs:
       # Étape 4 : Exécuter les tests Angular avec Karma
       - name: Run Angular tests with Karma
         run: npm run test -- --watch=false --code-coverage
-        working-directory: front
-        
+        working-directory: front  
+
       # Étape 5 : Sauvegarder les rapports de couverture comme artifact
       - name: Upload coverage report
         uses: actions/upload-artifact@v4
         with:
           name: coverage-report
-          path: front/coverage 
+          path: front/coverage
