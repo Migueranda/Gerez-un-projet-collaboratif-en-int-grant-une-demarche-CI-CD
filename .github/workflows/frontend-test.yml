@@ -1,47 +1,40 @@
-name: Angular CI
+name: Angular Front-End Tests
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
   pull_request:
-    branches: [ "main" ]
+    branches:
+      - main
 
 jobs:
-  build:
-
+  test-frontend:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [18.x, 20.x, 22.x]
-        # Les versions de Node.js ici, en fonction des versions supportées par votre projet Angular.
 
     steps:
       # Étape 1 : Cloner le repository
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-      # Étape 2 : Utiliser différentes versions de Node.js
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
+      # Étape 2 : Configurer Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
         with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'npm' # Active le cache pour npm afin d'accélérer les installations de dépendances
+          node-version: '20' 
+      # Étape 3 : Installer les dépendances
+      - name: Install dependencies
+        run: npm install
+        working-directory: front  
 
-      # Étape 3 : Installer les dépendances avec npm ci
-      - run: npm install
-        working-directory: front  # Répertoire du projet Angular
-
-      # Étape 4 : Construire le projet Angular
-      - run: npm run build --if-present
+      # Étape 4 : Exécuter les tests Angular avec Karma
+      - name: Run Angular tests with Karma
+        run: npm run test -- --watch=false --code-coverage
         working-directory: front
-
-      # Étape 5 : Exécuter les tests Angular avec Karma
-      - run: npm run test -- --watch=false --code-coverage
-        working-directory: front
-
-      # Étape 6 : Sauvegarder les rapports de couverture de tests comme artifacts
+        
+      # Étape 5 : Sauvegarder les rapports de couverture comme artifact
       - name: Upload coverage report
         uses: actions/upload-artifact@v4
         with:
           name: coverage-report
-          path: front/coverage  # Chemin vers les rapports de couverture générés par Karma
+          path: front/coverage 
