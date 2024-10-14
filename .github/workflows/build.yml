@@ -17,10 +17,10 @@ jobs:
           fetch-depth: 0  # Désactiver les shallow clones pour une meilleure analyse
 
       # Étape 2 : Configurer Java (assurer la compatibilité avec votre projet)
-      - name: Set up JDK 11
+      - name: Set up JDK 
         uses: actions/setup-java@v3
         with:
-          java-version: '11'
+          java-version: '17'
 
       # Étape 3 : Compiler le projet avec Maven
       - name: Build with Maven
