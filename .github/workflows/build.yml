@@ -26,14 +26,16 @@ jobs:
       # Étape 3 : Compiler le projet avec Maven
       - name: Build with Maven
         run: mvn clean install
-        # Si ton projet est dans un sous-répertoire, tu peux spécifier le chemin avec 'working-directory'
+        working-directory: back
+        
 
       # Étape 4 : Lancer l'analyse SonarQube
       - uses: sonarsource/sonarqube-scan-action@v3
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-
+        with:
+          projectBaseDir: back #
       # Étape optionnelle : Vérifier si la Quality Gate est passée
       # - uses: sonarsource/sonarqube-quality-gate-action@master
       #   timeout-minutes: 5
