@@ -36,10 +36,9 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
         with:
-          projectBaseDir: back #
           args: >
-            -Dsonar.projectKey=ton_project_key
-            -Dsonar.sources=back/src/main/java
-            -Dsonar.java.binaries=back/target/classes
+            -Dsonar.projectKey=sonar.projectKey
+            -Dsonar.sources=src/main/java
+            -Dsonar.java.binaries=target/classes
             -Dsonar.java.coveragePlugin=jacoco
-            -Dsonar.jacoco.reportPaths=back/target/jacoco-report/jacoco.xml
+            -Dsonar.jacoco.reportPaths=target/jacoco-report/jacoco.xml
