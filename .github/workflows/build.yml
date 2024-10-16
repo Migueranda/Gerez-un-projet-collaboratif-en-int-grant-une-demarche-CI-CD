@@ -14,9 +14,9 @@ jobs:
       # Étape 1 : Cloner le repository
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Désactiver les shallow clones pour une meilleure analyse
+          fetch-depth: 0 
 
-      # Étape 2 : Configurer Java (assurer la compatibilité avec votre projet)
+      # Étape 2 : Configurer Java 
       - name: Set up JDK 
         uses: actions/setup-java@v3
         with:
