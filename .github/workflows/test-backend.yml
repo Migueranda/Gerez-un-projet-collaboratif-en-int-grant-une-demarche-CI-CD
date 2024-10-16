@@ -17,19 +17,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      # Étape 2 : Configurer Java
+      # Étape 2 : Configuration Java
       - name: Setup JDK
         uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'temurin'
 
-      # Étape 3 : Installer les dépendances et exécuter les tests dans le répertoire 'back'
+      # Étape 3 : Installationdles dépendances et exécution des tests dans le répertoire 'back'
       - name: Run Maven tests and JaCoCo
         run: mvn clean verify
         working-directory: back
 
-      # Étape 4 : Sauvegarder les rapports JaCoCo comme artifact
+      # Étape 4 : Sauvegarde des rapports JaCoCo comme artifact
       - name: Upload JaCoCo coverage report
         uses: actions/upload-artifact@v4
         with:
