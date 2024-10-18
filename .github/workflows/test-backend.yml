@@ -20,14 +20,15 @@ jobs:
         java-version: '17'
 
       - name: Build and run tests with Maven
-        run: mvn clean verify  # e génère les rapports JaCoCo et Surefire
+        run: mvn clean verify 
+        working-directory: back
 
       # Étape : Sauvegarde des rapports de tests unitaires Surefire
       - name: Upload Surefire test report
         uses: actions/upload-artifact@v4
         with:
           name: surefire-reports
-          path: back/target/surefire-reports  # Chemin des rapports de tests unitaires
+          path: back/target/jacoco-report/jacoco.xml
 
       # Étape : Lancer l'analyse SonarQube
       - name: SonarQube Scan
@@ -35,3 +36,11 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+          with:
+          projectBaseDir: back
+          args: >
+            -Dsonar.projectKey=Migueranda_Gerez-un-projet-collaboratif-en-int-grant-une-demarche-CI-CD_5f302f1c-87c0-48b5-923a-f58c9c4cb441
+            -Dsonar.sources=back/src/main/java
+            -Dsonar.tests=back/src/test/java
+            -Dsonar.java.binaries=back/target/classes
+            -Dsonar.jacoco.reportPaths=back/target/jacoco-report/jacoco.xml   
