@@ -23,7 +23,7 @@ jobs:
 
       # Étape 3 : Compiler le projet avec Maven et générer les rapports JaCoCo
       - name: Build and run tests with Maven
-        run: mvn clean verify  # Exécute les tests et génère les rapports JaCoCo
+        run: mvn clean verify  
         working-directory: back
 
       # Étape 4 : Sauvegarder les rapports JaCoCo comme artifact
@@ -33,7 +33,14 @@ jobs:
           name: jacoco-report
           path: back/target/jacoco-report/jacoco.xml  # Chemin correct pour le rapport JaCoCo
 
-      # Étape 5 : Lancer l'analyse SonarQube
+      # Étape 5 : Sauvegarder les rapports Surefire (facultatif, mais recommandé)
+      - name: Upload Surefire test report
+        uses: actions/upload-artifact@v4
+        with:
+          name: surefire-reports
+          path: back/target/surefire-reports 
+
+      # Étape 6 : Lancer l'analyse SonarQube
       - name: SonarQube Scan
         uses: sonarsource/sonarqube-scan-action@v3
         env:
@@ -44,6 +51,7 @@ jobs:
           args: >
             -Dsonar.projectKey=Migueranda_Gerez-un-projet-collaboratif-en-int-grant-une-demarche-CI-CD_5f302f1c-87c0-48b5-923a-f58c9c4cb441
             -Dsonar.sources=back/src/main/java
-            -Dsonar.tests=back\src\test\java\com\openclassrooms\bobapp
+            -Dsonar.tests=back/src/test/java
             -Dsonar.java.binaries=back/target/classes
             -Dsonar.jacoco.reportPaths=back/target/jacoco-report/jacoco.xml
+            -Dsonar.junit.reportPaths=back/target/surefire-reports  
