@@ -1,44 +1,30 @@
-name: Spring Boot CI with JaCoCo
-
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
-
 jobs:
   test-backend:
     runs-on: ubuntu-latest
 
     steps:
-      # Étape 1 : Cloner le repository
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
-      # Étape 2 : Configurer Java
-      - name: Setup JDK
+      - name: Set up JDK
         uses: actions/setup-java@v3
         with:
-          java-version: '17'
           distribution: 'temurin'
+          java-version: '17'
 
-      # Étape 3 : Installer les dépendances et exécuter les tests dans le répertoire 'back'
-      - name: Run Maven tests and JaCoCo
-        run: mvn clean verify
-        working-directory: back
+      - name: Build and run tests with Maven
+        run: mvn clean verify  # e génère les rapports JaCoCo et Surefire
 
-      # Étape 4 : Sauvegarder les rapports JaCoCo comme artifact
-      - name: Upload JaCoCo coverage report
+      # Étape : Sauvegarder les rapports de tests unitaires Surefire
+      - name: Upload Surefire test report
         uses: actions/upload-artifact@v4
         with:
-          name: jacoco-report
-          path: back/target/site/jacoco
+          name: surefire-reports
+          path: back/target/surefire-reports  # Chemin des rapports de tests unitaires
 
-
-
-
-
-   
-    
+      # Étape : Lancer l'analyse SonarQube
+      - name: SonarQube Scan
+        uses: sonarsource/sonarqube-scan-action@v3
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
