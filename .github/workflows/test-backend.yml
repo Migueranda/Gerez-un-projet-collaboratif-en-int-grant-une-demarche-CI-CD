@@ -44,6 +44,6 @@ jobs:
           args: >
             -Dsonar.projectKey=Migueranda_Gerez-un-projet-collaboratif-en-int-grant-une-demarche-CI-CD_5f302f1c-87c0-48b5-923a-f58c9c4cb441
             -Dsonar.sources=back/src/main/java
-            -Dsonar.tests=back/src/test/java
+            -Dsonar.tests=back\src\test\java\com\openclassrooms\bobapp
             -Dsonar.java.binaries=back/target/classes
             -Dsonar.jacoco.reportPaths=back/target/jacoco-report/jacoco.xml
