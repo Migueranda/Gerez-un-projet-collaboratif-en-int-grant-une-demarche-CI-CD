@@ -14,22 +14,22 @@ jobs:
       # Étape 1 : Cloner le repository
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Désactiver les shallow clones pour une meilleure analyse
+          fetch-depth: 0 
 
-      # Étape 2 : Configurer Java (assurer la compatibilité avec votre projet)
+      # Étape 2 : Configuration Java 
       - name: Set up JDK 
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: '17'
 
-      # Étape 3 : Compiler le projet avec Maven
+      # Étape 3 : Compilation du projet avec Maven
       - name: Build with Maven
         run: mvn clean install
         working-directory: back
         
 
-      # Étape 4 : Lancer l'analyse SonarQube
+      # Étape 4 : Lancement analyse SonarQube
       - name: SonarQube Scan
         uses: sonarsource/sonarqube-scan-action@v3
         env:

@@ -6,16 +6,23 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # Étape 2 : Configuration Java
+      - name: Setup JDK
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
+
+      # Étape 3 : Installation des dépendances et exécution des tests
+      - name: Run Maven tests and JaCoCo
+        run: mvn clean verify
+        working-directory: back
           java-version: '17'
 
       - name: Build and run tests with Maven
         run: mvn clean verify  # e génère les rapports JaCoCo et Surefire
 
-      # Étape : Sauvegarder les rapports de tests unitaires Surefire
+      # Étape : Sauvegarde des rapports de tests unitaires Surefire
       - name: Upload Surefire test report
         uses: actions/upload-artifact@v4
         with:
