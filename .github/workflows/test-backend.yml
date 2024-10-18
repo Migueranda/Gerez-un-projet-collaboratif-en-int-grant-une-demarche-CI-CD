@@ -1,4 +1,4 @@
-name: Backend CI
+name: Java Back-End Tests
 
 on:
   push:
