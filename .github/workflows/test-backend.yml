@@ -1,29 +1,32 @@
-name: Java Back-End Tests
+name: Spring Boot CI with JaCoCo
 
 on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  build:
+  test-backend:
     runs-on: ubuntu-latest
 
     steps:
       # Étape 1 : Cloner le repository
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v2
 
       # Étape 2 : Configurer Java
-      - name: Set up JDK
+      - name: Setup JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'
           java-version: '17'
+          distribution: 'temurin'
 
-      # Étape 3 : Compiler le projet avec Maven et générer les rapports JaCoCo
-      - name: Build and run tests with Maven
-        run: mvn clean verify  
+      # Étape 3 : Installer les dépendances et exécuter les tests dans le répertoire 'back'
+      - name: Run Maven tests and JaCoCo
+        run: mvn clean verify
         working-directory: back
 
       # Étape 4 : Sauvegarder les rapports JaCoCo comme artifact
@@ -31,27 +34,18 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: jacoco-report
-          path: back/target/jacoco-report/jacoco.xml  # Chemin correct pour le rapport JaCoCo
-
-      # Étape 5 : Sauvegarder les rapports Surefire (facultatif, mais recommandé)
+          path: back/target/jacoco.exec
+          #path: back/target/site/jacoco
+        
       - name: Upload Surefire test report
         uses: actions/upload-artifact@v4
         with:
           name: surefire-reports
-          path: back/target/surefire-reports 
+          path: back/target/surefire-reports  # Chemin des rapports de tests unitaires
 
-      # Étape 6 : Lancer l'analyse SonarQube
       - name: SonarQube Scan
         uses: sonarsource/sonarqube-scan-action@v3
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-        # with:
-        #   projectBaseDir: back
-        #   args: >
-        #     -Dsonar.projectKey=Migueranda_Gerez-un-projet-collaboratif-en-int-grant-une-demarche-CI-CD_5f302f1c-87c0-48b5-923a-f58c9c4cb441
-        #     -Dsonar.sources=back/src/main/java
-        #     -Dsonar.tests=back/src/test/java/com/openclassrooms/bobapp 
-        #     -Dsonar.java.binaries=back/target/classes
-        #     -Dsonar.jacoco.reportPaths=back/target/jacoco-report/jacoco.xml
-        #     -Dsonar.junit.reportPaths=back/target/surefire-reports  
+
