@@ -1,4 +1,5 @@
 name: Spring Boot CI with JaCoCo
+
 on:
   push:
     branches:
@@ -12,24 +13,32 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Cloner le repository
+      # Étape 1 : Cloner le repository
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
-      # Configurer Java
+      # Étape 2 : Configurer Java
       - name: Setup JDK
         uses: actions/setup-java@v3
         with:
           java-version: '11'
           distribution: 'temurin'
 
-      # Installer les dépendances et exécuter les tests 
+      # Étape 3 : Installer les dépendances et exécuter les tests dans le répertoire 'back'
       - name: Run Maven tests and JaCoCo
         run: mvn clean verify
+        working-directory: back
 
-      # Sauvegarder les rapports JaCoCo comme artifact
+      # Étape 4 : Sauvegarder les rapports JaCoCo comme artifact
       - name: Upload JaCoCo coverage report
-        uses: actions/upload-artifact@v3  
+        uses: actions/upload-artifact@v4
         with:
           name: jacoco-report
-          path: target/site/jacoco
+          path: back/target/site/jacoco
+
+
+
+
+
+   
+    
