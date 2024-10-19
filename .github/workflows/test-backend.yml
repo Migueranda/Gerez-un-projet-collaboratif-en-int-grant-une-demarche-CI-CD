@@ -13,39 +13,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Étape 1 : Cloner le repository
-      - name: Checkout repository
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-      # Étape 2 : Configurer Java
       - name: Setup JDK
         uses: actions/setup-java@v3
         with:
-          java-version: '17'
+          java-version: '11'
           distribution: 'temurin'
 
-      # Étape 3 : Installer les dépendances et exécuter les tests dans le répertoire 'back'
       - name: Run Maven tests and JaCoCo
         run: mvn clean verify
         working-directory: back
 
-      # Étape 4 : Sauvegarder les rapports JaCoCo comme artifact
       - name: Upload JaCoCo coverage report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v2
         with:
           name: jacoco-report
-          path: back/target/jacoco.exec
-          #path: back/target/site/jacoco
-        
-      - name: Upload Surefire test report
-        uses: actions/upload-artifact@v4
-        with:
-          name: surefire-reports
-          path: back/target/surefire-reports  # Chemin des rapports de tests unitaires
-
-      - name: SonarQube Scan
-        uses: sonarsource/sonarqube-scan-action@v3
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-
+          path: back/target/jacoco-report/jacoco.xml
