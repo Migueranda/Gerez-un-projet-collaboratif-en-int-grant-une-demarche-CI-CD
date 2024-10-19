@@ -31,7 +31,8 @@ jobs:
 
       # Étape 4 : Lancement analyse SonarQube
       - name: SonarQube Scan
-        uses: sonarsource/sonarqube-scan-action@v3
+        # uses: sonarsource/sonarqube-scan-action@v3
+        run: mvn sonar:sonar -Pcoverage
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
