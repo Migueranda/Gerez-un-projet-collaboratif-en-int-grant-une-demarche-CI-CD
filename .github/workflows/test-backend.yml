@@ -35,6 +35,13 @@ jobs:
         with:
           name: jacoco-report
           path: back/target
+      
+      # Étape 5 : Télécharger les rapports JaCoCo en artifact
+      - name: Download JaCoCo coverage report
+        uses: actions/download-artifact@v4
+        with:
+          name: jacoco-report
+          path: ./back/target/jacoco
 
 
 
