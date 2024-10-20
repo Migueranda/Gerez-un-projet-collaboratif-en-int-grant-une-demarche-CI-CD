@@ -30,23 +30,12 @@ jobs:
         run: mvn clean verify
         working-directory: back
       
-      # # Étape 4 : géénration du report xml en faisant appel au plugin directement
-      # - name: JaCoCo XML Report
-      #   run: mvn jacoco:report
-        
       # Étape 5 : Sauvegarder les rapports JaCoCo comme artifact
       - name: Upload JaCoCo coverage report
         uses: actions/upload-artifact@v4
         with:
           name: back-coverage-report
           path: back/target/jacoco/jacoco.xml
-      
-      # # Étape 5 : Télécharger les rapports JaCoCo en artifact
-      # - name: Download JaCoCo coverage report
-      #   uses: actions/download-artifact@v4
-      #   with:
-      #     name: jacoco-report
-      #     path: ./back/target
 
   # Job 2 : Exécuter les tests Angular et générer l'artefact coverage-report
   test-frontend:
@@ -75,10 +64,12 @@ jobs:
           name: front-coverage-report
           path: front/coverage/bobapp
 
-  # Job 2 : Analyser avec SonarQube (exécute après le job de test-frontend)
+  # Job 3 : Analyser avec SonarQube (exécute après les jobs de test-backend et test-frontend)
   build-and-sonar:
     runs-on: ubuntu-latest
-    needs: test-backend, test-frontend  # Attendre que le job test-frontend soit terminé
+    needs: 
+      - test-backend
+      - test-frontend  # Syntaxe correcte, le job dépend des deux jobs
 
     steps:
       - name: Checkout repository
@@ -113,4 +104,3 @@ jobs:
         with:
           args:
             -Dprojet.settings=sonar-project.properties
-            # -Dsonar.javascript.lcov.reportPaths=front/coverage/bobapp/lcov.info
