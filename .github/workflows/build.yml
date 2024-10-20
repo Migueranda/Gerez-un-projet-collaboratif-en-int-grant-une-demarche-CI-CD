@@ -49,4 +49,4 @@ jobs:
       
       # Étape 5 : Vérification génération fichier
       - name: Vérification génération fichier lcov
-        run: ls -R
+        run: ls -R ./front
