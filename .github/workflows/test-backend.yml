@@ -29,9 +29,9 @@ jobs:
         run: mvn clean verify
         working-directory: back
       
-      # Étape 4 : géénration du report xml en faisant appel au plugin directement
-      - name: JaCoCo XML Report
-        run: mvn jacoco:report
+      # # Étape 4 : géénration du report xml en faisant appel au plugin directement
+      # - name: JaCoCo XML Report
+      #   run: mvn jacoco:report
         
       # Étape 5 : Sauvegarder les rapports JaCoCo comme artifact
       - name: Upload JaCoCo coverage report
