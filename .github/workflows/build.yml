@@ -31,15 +31,15 @@ jobs:
 
       # Étape 4 : Lancement analyse SonarQube
       - name: SonarQube Scan
-        # uses: sonarsource/sonarqube-scan-action@v3
-        run: mvn sonar:sonar
-        working-directory: back
+        uses: sonarsource/sonarqube-scan-action@v3
+        # run: mvn sonar:sonar
+        # working-directory: back
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-        # with:
-        #   args:
-        #     -Dprojet.settings=sonar-project.properties
+        with:
+          args:
+            -Dprojet.settings=sonar-project.properties
           # args: >
           #   -Dsonar.projectKey=Migueranda_Gerez-un-projet-collaboratif-en-int-grant-une-demarche-CI-CD_5f302f1c-87c0-48b5-923a-f58c9c4cb441
           #   -Dsonar.sources=back/src/main/java,front/src/app
