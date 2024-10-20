@@ -39,3 +39,7 @@ jobs:
         with:
           name: coverage-report
           path: front/coverage/bobapp
+      
+      # Étape 6 : Vérification de la génération du fichier lcov.info
+      - name: List coverage directory
+        run: ls -R front/coverage
