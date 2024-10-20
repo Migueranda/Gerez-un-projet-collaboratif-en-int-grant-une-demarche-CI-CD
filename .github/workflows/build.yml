@@ -27,9 +27,19 @@ jobs:
       - name: Build with Maven
         run: mvn clean install
         working-directory: back
-        
+      
+      # Étape 4 : Télécharger les rapports de couverture générés par le premier pipeline
+      - name: Download coverage report artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage-report
+          path: front/coverage/bobapp  # Spécifie où placer l'artefact téléchargé
+      
+      # Étape 5 : Vérification génération fichier lcov
+      - name: Vérification génération fichier lcov
+        run: ls -R ./front/coverage/bobapp
 
-      # Étape 4 : Lancement analyse SonarQube
+      # Étape 6 : Lancement analyse SonarQube
       - name: SonarQube Scan
         uses: sonarsource/sonarqube-scan-action@v3
         # run: mvn sonar:sonar
@@ -46,7 +56,3 @@ jobs:
           #   -Dsonar.java.binaries=back/target/classes
           #   -Dsonar.java.coveragePlugin=jacoco
           # -Dsonar.jacoco.reportPaths=target/jacoco-report/jacoco.xml
-      
-      # Étape 5 : Vérification génération fichier
-      - name: Vérification génération fichier lcov
-        run: ls -R ./front
