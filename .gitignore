@@ -5,7 +5,7 @@ HELP.md
 !**/src/test/**/target/
 node_modules/
 dist/
-# coverage/
+/front/coverage/
 
 ### STS ###
 .apt_generated
