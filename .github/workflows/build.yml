@@ -46,5 +46,7 @@ jobs:
           #   -Dsonar.java.binaries=back/target/classes
           #   -Dsonar.java.coveragePlugin=jacoco
           # -Dsonar.jacoco.reportPaths=target/jacoco-report/jacoco.xml
+      
+      # Étape 5 : Vérification génération fichier
       - name: Vérification génération fichier lcov
-        run: ls -R front/coverage/
+        run: ls -R
