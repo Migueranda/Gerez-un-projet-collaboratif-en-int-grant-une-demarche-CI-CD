@@ -28,20 +28,24 @@ jobs:
       - name: Run Maven tests and JaCoCo
         run: mvn clean verify
         working-directory: back
+      
+      # Étape 4 : géénration du report xml en faisant appel au plugin directement
+      - name: JaCoCo XML Report
+        run: mvn jacoco:report
 
-      # Étape 4 : Sauvegarder les rapports JaCoCo comme artifact
+      # Étape 5 : Sauvegarder les rapports JaCoCo comme artifact
       - name: Upload JaCoCo coverage report
         uses: actions/upload-artifact@v4
         with:
           name: jacoco-report
-          path: back/target
+          path: back/target/site/jacoco/jacoco.xml
       
-      # Étape 5 : Télécharger les rapports JaCoCo en artifact
-      - name: Download JaCoCo coverage report
-        uses: actions/download-artifact@v4
-        with:
-          name: jacoco-report
-          path: ./back/target
+      # # Étape 5 : Télécharger les rapports JaCoCo en artifact
+      # - name: Download JaCoCo coverage report
+      #   uses: actions/download-artifact@v4
+      #   with:
+      #     name: jacoco-report
+      #     path: ./back/target
 
 
 
