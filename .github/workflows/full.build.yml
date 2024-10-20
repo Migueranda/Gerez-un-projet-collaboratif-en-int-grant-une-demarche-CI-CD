@@ -1,0 +1,77 @@
+name: Full CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  # Job 1 : Exécuter les tests Angular et générer l'artefact coverage-report
+  test-frontend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: front
+
+      - name: Run Angular tests with Karma
+        run: npm run test -- --watch=false --code-coverage
+        working-directory: front
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: front/coverage/bobapp
+
+  # Job 2 : Analyser avec SonarQube (exécute après le job de test-frontend)
+  build-and-sonar:
+    runs-on: ubuntu-latest
+    needs: test-frontend  # Attendre que le job test-frontend soit terminé
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Build with Maven
+        run: mvn clean install
+        working-directory: back
+
+      - name: Download coverage report artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage-report
+          path: front/coverage/bobapp
+
+      - name: Vérification génération fichier lcov
+        run: ls -R ./front/coverage/bobapp
+
+      - name: SonarQube Scan
+        uses: sonarsource/sonarqube-scan-action@v3
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+        with:
+          args:
+            -Dprojet.settings=sonar-project.properties
+            # -Dsonar.javascript.lcov.reportPaths=front/coverage/bobapp/lcov.info
