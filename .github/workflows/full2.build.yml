@@ -69,7 +69,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: 
       - test-backend
-      - test-frontend  # Syntaxe correcte, le job dépend des deux jobs
+      - test-frontend  
 
     steps:
       - name: Checkout repository
