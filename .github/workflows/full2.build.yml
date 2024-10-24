@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  # Job 1 : Exécuter les tests Maven avec JaCoCo et générer l'artefact back-coverage-report
+  # Job 1 : Exécuter les tests Maven avec JaCoCo et générer l'artifact back-coverage-report
   test-backend:
     runs-on: ubuntu-latest
 
@@ -37,7 +37,7 @@ jobs:
           name: back-coverage-report
           path: back/target/jacoco/jacoco.xml
 
-  # Job 2 : Exécuter les tests Angular et générer l'artefact coverage-report
+  # Job 2 : Exécuter les tests Angular et générer l'artifact coverage-report
   test-frontend:
     runs-on: ubuntu-latest
 
