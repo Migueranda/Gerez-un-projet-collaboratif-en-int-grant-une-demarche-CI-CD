@@ -9,6 +9,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+     #  Étape 1 : Clonage du repository
       - name: Checkout repository
         uses: actions/checkout@v4
 
